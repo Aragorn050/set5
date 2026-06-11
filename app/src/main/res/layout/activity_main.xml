@@ -1,0 +1,7 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:background="@color/bg_dark" android:padding="32dp">
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🧩" android:textSize="64sp" android:layout_marginBottom="8dp"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MAZE" android:textColor="@color/accent_green" android:textSize="56sp" android:textStyle="bold" android:letterSpacing="0.3" android:fontFamily="monospace"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="GAME" android:textColor="@color/text_dim" android:textSize="18sp" android:letterSpacing="0.5" android:fontFamily="monospace" android:layout_marginBottom="64dp"/>
+    <Button android:id="@+id/btnStart" android:layout_width="220dp" android:layout_height="56dp" android:text="▶ START GAME" android:textColor="@color/bg_dark" android:textSize="16sp" android:textStyle="bold" android:fontFamily="monospace" android:backgroundTint="@color/accent_green" android:stateListAnimator="@null"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Find the exit — room value 0" android:textColor="@color/text_dim" android:textSize="13sp" android:fontFamily="monospace" android:layout_marginTop="48dp"/>
+</LinearLayout>
