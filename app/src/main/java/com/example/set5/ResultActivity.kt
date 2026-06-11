@@ -21,14 +21,12 @@ class ResultActivity : AppCompatActivity() {
 
         tvSteps.text = "Steps taken: $steps"
 
-        // Prevent back gesture from returning to the completed game
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 goToMenu()
             }
         })
 
-        // Restart — launch a fresh game
         btnRestart.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -36,7 +34,6 @@ class ResultActivity : AppCompatActivity() {
             finish()
         }
 
-        // Back to main menu
         btnMenu.setOnClickListener { goToMenu() }
     }
 

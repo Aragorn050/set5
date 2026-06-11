@@ -10,12 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 
 class GameActivity : AppCompatActivity() {
 
-    // ── state ──────────────────────────────────────────────────────────────
+
     private var playerRow = 0
     private var playerCol = 0
     private var stepCount  = 0
 
-    // ── views ──────────────────────────────────────────────────────────────
+
     private lateinit var btnUp    : Button
     private lateinit var btnDown  : Button
     private lateinit var btnLeft  : Button
@@ -25,18 +25,17 @@ class GameActivity : AppCompatActivity() {
     private lateinit var tvRoom   : TextView
     private lateinit var tvDoors  : TextView
 
-    // ── colours ────────────────────────────────────────────────────────────
-    private val colorEnabled  = Color.parseColor("#3FB950")   // green
-    private val colorDisabled = Color.parseColor("#21262D")   // dark grey
-    private val textEnabled   = Color.parseColor("#0D1117")   // near-black on green
-    private val textDisabled  = Color.parseColor("#484F58")   // dim on grey
 
-    // ──────────────────────────────────────────────────────────────────────
+    private val colorEnabled  = Color.parseColor("#3FB950")
+    private val colorDisabled = Color.parseColor("#21262D")
+    private val textEnabled   = Color.parseColor("#0D1117")
+    private val textDisabled  = Color.parseColor("#484F58")
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        // Bind views
         btnUp    = findViewById(R.id.btnUp)
         btnDown  = findViewById(R.id.btnDown)
         btnLeft  = findViewById(R.id.btnLeft)
@@ -46,7 +45,7 @@ class GameActivity : AppCompatActivity() {
         tvRoom   = findViewById(R.id.tvRoomNumber)
         tvDoors  = findViewById(R.id.tvDoorStatus)
 
-        // Restore state across rotation
+
         if (savedInstanceState != null) {
             playerRow = savedInstanceState.getInt("row", 0)
             playerCol = savedInstanceState.getInt("col", 0)
@@ -58,7 +57,6 @@ class GameActivity : AppCompatActivity() {
             stepCount = 0
         }
 
-        // Button listeners
         btnUp.setOnClickListener    { tryMove(MazeData.DOOR_UP)    }
         btnDown.setOnClickListener  { tryMove(MazeData.DOOR_DOWN)  }
         btnLeft.setOnClickListener  { tryMove(MazeData.DOOR_LEFT)  }
@@ -67,7 +65,7 @@ class GameActivity : AppCompatActivity() {
         updateUI()
     }
 
-    // ──────────────────────────────────────────────────────────────────────
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("row",   playerRow)
@@ -75,7 +73,7 @@ class GameActivity : AppCompatActivity() {
         outState.putInt("steps", stepCount)
     }
 
-    // ──────────────────────────────────────────────────────────────────────
+
     private fun tryMove(direction: Int) {
         val dest = MazeData.move(playerRow, playerCol, direction) ?: return
 
@@ -83,7 +81,6 @@ class GameActivity : AppCompatActivity() {
         playerCol = dest.second
         stepCount++
 
-        // Check for exit FIRST, then update UI
         if (MazeData.isExit(playerRow, playerCol)) {
             launchResult()
             return
@@ -92,18 +89,15 @@ class GameActivity : AppCompatActivity() {
         updateUI()
     }
 
-    // ──────────────────────────────────────────────────────────────────────
+
     private fun updateUI() {
-        // Info bar
         tvCoords.text = "Room [${playerRow}, ${playerCol}]"
         val raw   = MazeData.rawValue(playerRow, playerCol)
         val doors = MazeData.doorBits(playerRow, playerCol)
         tvDebug.text = "mask: $raw"
 
-        // Centre room label
         tvRoom.text = "${playerRow}, ${playerCol}"
 
-        // Door summary text
         val doorList = buildList {
             if (MazeData.canMove(playerRow, playerCol, MazeData.DOOR_UP))    add("U")
             if (MazeData.canMove(playerRow, playerCol, MazeData.DOOR_DOWN))  add("D")
@@ -112,14 +106,13 @@ class GameActivity : AppCompatActivity() {
         }
         tvDoors.text = if (doorList.isEmpty()) "Doors: none" else "Doors: ${doorList.joinToString("  ")}"
 
-        // Style each button based on whether that move is allowed
         styleButton(btnUp,    MazeData.canMove(playerRow, playerCol, MazeData.DOOR_UP))
         styleButton(btnDown,  MazeData.canMove(playerRow, playerCol, MazeData.DOOR_DOWN))
         styleButton(btnLeft,  MazeData.canMove(playerRow, playerCol, MazeData.DOOR_LEFT))
         styleButton(btnRight, MazeData.canMove(playerRow, playerCol, MazeData.DOOR_RIGHT))
     }
 
-    // ──────────────────────────────────────────────────────────────────────
+
     private fun styleButton(btn: Button, available: Boolean) {
         btn.isEnabled = available
         btn.backgroundTintList = android.content.res.ColorStateList.valueOf(
@@ -128,7 +121,7 @@ class GameActivity : AppCompatActivity() {
         btn.setTextColor(if (available) textEnabled else textDisabled)
     }
 
-    // ──────────────────────────────────────────────────────────────────────
+
     private fun launchResult() {
         val intent = Intent(this, ResultActivity::class.java)
         intent.putExtra("steps", stepCount)
